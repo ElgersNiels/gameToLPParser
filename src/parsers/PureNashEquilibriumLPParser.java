@@ -31,6 +31,7 @@ public class PureNashEquilibriumLPParser {
 				
 				//Expected payoff constraints (EPC).
 				for (int action = 1; action <= game.getNumActions(player); action++) {
+					outcomesExcept.reset();
 					writer.print(" epc_" + player + "/" + action + ": ");
 					while (outcomesExcept.hasNext()) {
 						int[] outcome = outcomesExcept.next().clone(); outcome[player] = action;

@@ -12,7 +12,7 @@ public class OutcomeIterator implements Iterator<int[]> {
 	
 	private int nbOfPlayers;	//Number of players of the Game.
 	private int[] nbOfActions;	//Number of actions for each player of the Game.
-	
+	private int nbOfOutcomes;
 	private int[] currentOutcome;	//Current outcome.
 	
 	/**
@@ -21,10 +21,11 @@ public class OutcomeIterator implements Iterator<int[]> {
 	 */
 	public OutcomeIterator(Game game) {
 		this.nbOfPlayers = game.getNumPlayers();
-		this.nbOfActions = game.getNumActions();
+		this.nbOfActions = game.getNumActions().clone();
 		
 		this.currentOutcome = new int[nbOfPlayers]; for (int player = 0; player < nbOfPlayers; player++) currentOutcome[player] = 1;
 		
+		this.nbOfOutcomes = GameTools.nbOfOutcomes(nbOfActions);
 		this.count = 0;
 	}
 	
@@ -37,19 +38,18 @@ public class OutcomeIterator implements Iterator<int[]> {
 		this(game);
 		
 		this.nbOfActions[player] = 1;
+		this.nbOfOutcomes /= game.getNumActions(player);
 		
 	}
 
 	@Override
 	public boolean hasNext() {
-		for (int player = 0; player < nbOfPlayers; player++)
-			if (currentOutcome[player] < nbOfActions[player]) return true;
-		
-		return false;
+		return count < nbOfOutcomes;
 	}
 
 	@Override
 	public int[] next() {
+		int[] toReturn = currentOutcome.clone();
 		for (int player = 0; player < nbOfPlayers; player++) {
 			if (currentOutcome[player] == nbOfActions[player]) {
 				currentOutcome[player] = 1;
@@ -62,13 +62,12 @@ public class OutcomeIterator implements Iterator<int[]> {
 		}
 		
 		count++;
-		return currentOutcome;
+		return toReturn;
 	}
 	
 	public void reset() {
 		count = 0;
 		for (int player = 0; player < nbOfPlayers; player++) currentOutcome[player] = 1;
-	
 	}
 	
 	public int getCount() {
