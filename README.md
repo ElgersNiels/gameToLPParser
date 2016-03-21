@@ -20,3 +20,4 @@ Currently:
 
 - ~~Parsers currently take exponential amount of memory (getOutcomes(), getOutcomesExcept(), ...) . Avoid.~~
 - Clean up code. Add comments.
+- Add relevant links to README
