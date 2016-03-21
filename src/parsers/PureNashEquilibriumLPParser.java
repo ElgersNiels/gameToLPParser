@@ -5,7 +5,7 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 
 import edu.stanford.multiagent.gamer.Game;
-import gametools.GameTools;
+import gametools.OutcomeIterator;
 
 public class PureNashEquilibriumLPParser {
 
@@ -27,17 +27,17 @@ public class PureNashEquilibriumLPParser {
 			
 			writer.println("Subject To");
 			for (int player = 0; player < game.getNumPlayers(); player++) {
-				int[][] outcomesExcept = GameTools.getOutcomesExcept(game, player);
+				OutcomeIterator outcomesExcept = new OutcomeIterator(game, player);
 				
 				//Expected payoff constraints (EPC).
 				for (int action = 1; action <= game.getNumActions(player); action++) {
 					writer.print(" epc_" + player + "/" + action + ": ");
-					for (int outcomeExcept = 0; outcomeExcept < outcomesExcept.length; outcomeExcept++) {
-						int[] outcome = outcomesExcept[outcomeExcept].clone(); outcome[player] = action;
+					while (outcomesExcept.hasNext()) {
+						int[] outcome = outcomesExcept.next().clone(); outcome[player] = action;
 						
 						double payoff = game.getPayoff(outcome, player);
 						
-						if (outcomeExcept != 0 && payoff >= 0) writer.print("+");
+						if (outcomesExcept.getCount() != 0 && payoff >= 0) writer.print("+");
 						
 						writer.print(payoff + " " + makeY(game, outcome, player) + " ");
 				
@@ -65,15 +65,18 @@ public class PureNashEquilibriumLPParser {
 					writer.println(beta + " x_" + player + "/" + action + " <= " + beta);
 				}
 				
-				for (int outcomeExcept = 0; outcomeExcept < outcomesExcept.length; outcomeExcept++) {
+				outcomesExcept.reset();
+				while (outcomesExcept.hasNext()) {
+					int[] outcome = outcomesExcept.next().clone();
+					
 					//sum constraint (SC).
-					writer.print(" sum_" + player + "/" + outcomeExcept + ": ");
-					writer.print(makeY(game, outcomesExcept[outcomeExcept], player));
+					writer.print(" sum_" + player + "/" + outcomesExcept.getCount() + ": ");
+					writer.print(makeY(game, outcome, player));
 					
 					for (int playerH = 0; playerH < game.getNumPlayers(); playerH++) {
 						if (playerH == player) continue;;
 						
-						writer.print(" - x_" + playerH + "/" + outcomesExcept[outcomeExcept][playerH]);
+						writer.print(" - x_" + playerH + "/" + outcome[playerH]);
 					}
 					
 					
@@ -83,9 +86,9 @@ public class PureNashEquilibriumLPParser {
 					for (int playerK = 0; playerK < game.getNumPlayers(); playerK++) {
 						if (playerK == player) continue;
 						
-						writer.print(" idk_" + player + "/" + outcomeExcept + "/" + playerK + ": ");
-						writer.print(makeY(game, outcomesExcept[outcomeExcept], player));
-						writer.println(" - x_" + playerK + "/" + outcomesExcept[outcomeExcept][playerK] + " <= 0");	
+						writer.print(" idk_" + player + "/" + outcomesExcept.getCount() + "/" + playerK + ": ");
+						writer.print(makeY(game, outcome, player));
+						writer.println(" - x_" + playerK + "/" + outcome[playerK] + " <= 0");	
 					}
 				}
 				
@@ -123,7 +126,7 @@ public class PureNashEquilibriumLPParser {
 	}
 	
 	private static double computeBeta(Game game) {
-		int[][] outcomes = GameTools.getOutcomes(game);
+		OutcomeIterator outcomeIterator = new OutcomeIterator(game);
 		
 		double max = -Double.MAX_VALUE;
 		
@@ -131,8 +134,9 @@ public class PureNashEquilibriumLPParser {
 			double maxPlayer = -Double.MAX_VALUE;
 			double minPlayer = Double.MAX_VALUE;
 			
-			for (int[] outcome : outcomes) {
-				double payoff = game.getPayoff(outcome, player);
+			outcomeIterator.reset();
+			while(outcomeIterator.hasNext()) {
+				double payoff = game.getPayoff(outcomeIterator.next(), player);
 				
 				if (payoff > maxPlayer) maxPlayer = payoff;
 				if (payoff < minPlayer) minPlayer = payoff;
