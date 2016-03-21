@@ -6,6 +6,7 @@ import java.io.UnsupportedEncodingException;
 
 import edu.stanford.multiagent.gamer.Game;
 import gametools.GameTools;
+import gametools.OutcomeIterator;
 
 public class OptimalCorrelatedEquilibriumLPParser {
 
@@ -22,10 +23,10 @@ public class OptimalCorrelatedEquilibriumLPParser {
 		try {
 			PrintWriter writer = new PrintWriter(path + name + ".lp", "UTF-8"); //Create output stream.
 			
+			OutcomeIterator outcomeIterator = new OutcomeIterator(game);
 			int		nbOfPlayers	 = game.getNumPlayers();		 //Get number of players in given Game.
-			int		nbOfOutcomes = GameTools.nbOfOutcomes(game); //Compute number of outcomes in given Game.
 			int[]	nbOfActions	 = game.getNumActions().clone(); //Get the number of actions of each player.
-			int[][] outcomes	 = GameTools.getOutcomes(game);  //Compute all outcomes in given Game.
+			int     nbOfOutcomes = GameTools.nbOfOutcomes(game);  //Compute all outcomes in given Game.
 			
 			//**COMMENTS**
 			
@@ -44,18 +45,19 @@ public class OptimalCorrelatedEquilibriumLPParser {
 			//The coefficient of a outcome variable is the linear combination of the payoff values of all players for that outcome.
 			
 			//For all outcome variables.
-			for (int outcome = 0; outcome < nbOfOutcomes; outcome++) {
+			while (outcomeIterator.hasNext()) {
+				int[] outcome = outcomeIterator.next();
 				double coeff = 0;
 				//Make linear combination of payoff values of all players.
 				for (int player = 0; player < nbOfPlayers; player++)
-					coeff += game.getPayoff(outcomes[outcome], player);
+					coeff += game.getPayoff(outcome, player);
 				
 				//Write new found coefficient to .lp file
 				
 				writer.print(" ");
 				//If this isn't the first coefficient and the coefficient is positive, write a plus.
 				//A minus is automatically written when the coefficient is negative.
-				if (coeff >= 0 && outcome > 0) writer.print("+ ");
+				if (coeff >= 0 && outcomeIterator.getCount() > 0) writer.print("+ ");
 				//Write the name of the coefficient.
 				writer.print(coeff + " x" + outcome);
 			}
@@ -75,7 +77,7 @@ public class OptimalCorrelatedEquilibriumLPParser {
 			for (int player = 0; player < nbOfPlayers; player++) {
 				
 				// S_{-p}
-				int[][] outcomesExcept = GameTools.getOutcomesExcept(game, player); 
+				OutcomeIterator outcomesExcept = new OutcomeIterator(game, player);
 				
 				// \forall i \in S_p
 				for (int actionI = 1; actionI <= nbOfActions[player]; actionI++) {
@@ -87,11 +89,13 @@ public class OptimalCorrelatedEquilibriumLPParser {
 						writer.print(" " + (player+1) + "_" + actionI + "_" + actionJ + ":");
 						
 						// sum_{s \in S_{-p}}
-						for (int outcomeExcept = 0; outcomeExcept < outcomesExcept.length; outcomeExcept++) {
+						while (outcomesExcept.hasNext()) {
+							int[] outcome = outcomesExcept.next();
+							
 							double coeff = 0;
 							
-							int[] outcomeI = outcomesExcept[outcomeExcept].clone(); outcomeI[player] = actionI;
-							int[] outcomeJ = outcomesExcept[outcomeExcept].clone(); outcomeJ[player] = actionJ;
+							int[] outcomeI = outcome.clone(); outcomeI[player] = actionI;
+							int[] outcomeJ = outcome.clone(); outcomeJ[player] = actionJ;
 							
 							// coeff = (u_p(i,s) - u_p(j,s))
 							coeff = game.getPayoff(outcomeI, player) - game.getPayoff(outcomeJ, player);
@@ -99,7 +103,7 @@ public class OptimalCorrelatedEquilibriumLPParser {
 							//If this isn't the first coefficient and the coefficient is positive, write a plus.
 							//A minus is automatically written when the coefficient is negative.
 							writer.print(" ");
-							if (coeff >= 0 && outcomeExcept > 0) writer.print("+ ");
+							if (coeff >= 0 && outcomeIterator.getCount() > 0) writer.print("+ ");
 							// coeff + x_{is}
 							writer.print(coeff + " x" + GameTools.getOutcomeIndex(game, outcomeI));
 						}
