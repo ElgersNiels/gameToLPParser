@@ -23,9 +23,9 @@ public class OutcomeIterator implements Iterator<int[]> {
 		this.nbOfPlayers = game.getNumPlayers();
 		this.nbOfActions = game.getNumActions();
 		
-		for (int player = 0; player < game.getNumPlayers(); player++) currentOutcome[player] = 1;
+		this.currentOutcome = new int[nbOfPlayers]; for (int player = 0; player < nbOfPlayers; player++) currentOutcome[player] = 1;
 		
-		count = 0;
+		this.count = 0;
 	}
 	
 	/**
@@ -63,6 +63,12 @@ public class OutcomeIterator implements Iterator<int[]> {
 		
 		count++;
 		return currentOutcome;
+	}
+	
+	public void reset() {
+		count = 0;
+		for (int player = 0; player < nbOfPlayers; player++) currentOutcome[player] = 1;
+	
 	}
 	
 	public int getCount() {
