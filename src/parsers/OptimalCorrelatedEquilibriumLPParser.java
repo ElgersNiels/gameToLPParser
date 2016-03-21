@@ -59,7 +59,7 @@ public class OptimalCorrelatedEquilibriumLPParser {
 				//A minus is automatically written when the coefficient is negative.
 				if (coeff >= 0 && outcomeIterator.getCount() > 0) writer.print("+ ");
 				//Write the name of the coefficient.
-				writer.print(coeff + " x" + outcome);
+				writer.print(coeff + " x" + outcomeIterator.getCount());
 			}
 			writer.println();
 			
@@ -134,7 +134,7 @@ public class OptimalCorrelatedEquilibriumLPParser {
 			
 			writer.close();
 			
-			System.out.println(game.getName() + " OCE LP was succesfully written to: " + path + name + ".lp");
+			System.out.println(game.getName() + " OCE LP was succesfully written to " + path + name + ".lp");
 			
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();

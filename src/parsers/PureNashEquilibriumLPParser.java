@@ -108,6 +108,8 @@ public class PureNashEquilibriumLPParser {
 			writer.println("End");
 			writer.close();
 			
+			System.out.println(game.getName() + " PNE LP was succesfully written to " + path + name + ".lp");
+			
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
