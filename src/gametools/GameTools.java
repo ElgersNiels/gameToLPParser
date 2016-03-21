@@ -88,7 +88,7 @@ public class GameTools {
 				//The current player has not reached his last action yet.
 				//Change this player's action to the next one, and break the loop: a new outcome has been found.
 				else {
-					outcomes[outcome][player] += 1;
+					outcomes[outcome][player]++;
 					break;
 				}
 			}
