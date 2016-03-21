@@ -6,7 +6,7 @@ Currently:
   - Pure Nash Equilibrium
   - Optimal Correlated Equilibrium
   
-# Pure nash Equilibrium
+# Pure Nash Equilibrium
 
 **Pure Nash Equilibrium** is a solution concept in which an equilibrium is reached when each player plays an action in a way none of the other players will want to (unilaterally) deviate. Deciding whether a Pure Nash Equilibrium exists is NP-Complete for many classes of games, such as: Normal Form Games, Graphical Games with bounded neighbourhood, Acyclic-(hyper)graph Game, (...).
 
