@@ -6,4 +6,5 @@ Currently:
   
 # To do:
 
-- Parsers currently take exponential amount of memory (getOutcomes(), getOutcomesExcept(), ...) . Avoid.
+- ~~Parsers currently take exponential amount of memory (getOutcomes(), getOutcomesExcept(), ...) . Avoid.~~
+- Clean up code. Add comments.
