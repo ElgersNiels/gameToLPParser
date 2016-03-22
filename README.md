@@ -24,7 +24,7 @@ It is important to note that the parsers take polynomial amount of memory in the
 
 **Correlated Equilibrium** is a solution concept which is a probability distribution over all the possible outcomes the relevant game can have. A strategy is assigned to each player according to this distribution. In equilibrium, no player will want to (unilaterally) deviate from his given strategy. In many games, computing such an equilibrium can be done in polynomial time. Examples of such games are: Normal Form Games, Graphical Games, Symmetric Games, Anonymous Games, Polymatrix Games, Congestion Games, (...).
 
-**Optimizing over all correlated equilibria** according to some linear function (e.g. sum of all players expected payoffs in equilibrium) is in some cases NP-Hard. Examples of games in which computing Optimal Correlated Equilibria is NP-Hard: Graphical Games, Polymatrix Games, Congestion Games, (...). Examples in which it can be done in polynomial time: Normal Form Games, Symmetric Games, Anonymous Games, (...)
+**Optimizing over all correlated equilibria** according to some linear function (e.g. sum of all player's expected payoffs in equilibrium) is in some cases NP-Hard. Examples of games in which computing Optimal Correlated Equilibria is NP-Hard: Graphical Games, Polymatrix Games, Congestion Games, (...). Examples in which it can be done in polynomial time: Normal Form Games, Symmetric Games, Anonymous Games, (...)
 
 # To do:
 
