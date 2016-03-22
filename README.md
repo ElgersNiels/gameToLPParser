@@ -18,11 +18,11 @@ It is important to note that the parsers take polynomial amount of memory in the
 
 # Pure Nash Equilibrium
 
-**Pure Nash Equilibrium** is a solution concept in which an equilibrium is reached when each player plays an action in a way none of the other players will want to (unilaterally) deviate. Deciding whether a Pure Nash Equilibrium exists is NP-Complete for many classes of games, such as: Normal Form Games, Graphical Games with bounded neighbourhood, Acyclic-(hyper)graph Game, (...).
+**Pure Nash Equilibrium** is a solution concept in which an equilibrium is reached when each player plays an action in a way none of the players will want to (unilaterally) deviate. Deciding whether a Pure Nash Equilibrium exists is NP-Complete for many classes of games, such as: Normal Form Games, Graphical Games with bounded neighbourhood, Acyclic-(hyper)graph Game, (...).
 
 # Optimal Correlated Equilibrium
 
-**Correlated Equilibrium** is a solution concept which is a probability distribution over all the possible outcomes the relevant game can have. A strategy is assigned to each player according to this distribution. In equilibrium, no player will want to deviate from his given strategy. In many games, computing such an equilibrium can be done in polynomial time. Examples of such games are: Normal Form Games, Graphical Games, Symmetric Games, Anonymous Games, Polymatrix Games, Congestion Games, (...).
+**Correlated Equilibrium** is a solution concept which is a probability distribution over all the possible outcomes the relevant game can have. A strategy is assigned to each player according to this distribution. In equilibrium, no player will want to (unilaterally) deviate from his given strategy. In many games, computing such an equilibrium can be done in polynomial time. Examples of such games are: Normal Form Games, Graphical Games, Symmetric Games, Anonymous Games, Polymatrix Games, Congestion Games, (...).
 
 **Optimizing over all correlated equilibria** according to some linear function (e.g. sum of all players expected payoffs in equilibrium) is in some cases NP-Hard. Examples of games in which computing Optimal Correlated Equilibria is NP-Hard: Graphical Games, Polymatrix Games, Congestion Games, (...). Examples in which it can be done in polynomial time: Normal Form Games, Symmetric Games, Anonymous Games, (...)
 
