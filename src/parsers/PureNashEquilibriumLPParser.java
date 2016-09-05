@@ -11,10 +11,11 @@ public class PureNashEquilibriumLPParser {
 
 	/**
 	 * Creates and write the PNE LP for given game to given .lp file.
-	 * @param game The game for which to create the PNE LP.
+	 * Note that this process may be computationally expensive (i.e. exponential) for large games.
+	 * @param game The (GAMUT) Game for which to create the PNE LP.
 	 * @param path The path of the .lp file.
 	 * @param name The name of the .lp file.
-	 * @throws FileNotFoundException
+	 * @throws FileNotFoundException When an illegal path is given.
 	 * @post The .lp file will be located at: path + name + ".lp" and will have a UTF-8 encoding.
 	 * http://www.hindawi.com/journals/mpe/2014/640960/
 	 */
@@ -88,7 +89,7 @@ public class PureNashEquilibriumLPParser {
 					toFile.println(beta + " x_" + player + "!" + action + " <= " + beta);
 				}
 				
-				//Kinda hazy on what these constraints force.
+				//Kinda hazy on what these constraints force (should look into it again).
 				//Constraints involving y variable.
 				outcomesExcept.reset();
 				while (outcomesExcept.hasNext()) {
@@ -132,6 +133,8 @@ public class PureNashEquilibriumLPParser {
 				for (int action = 1; action <= game.getNumActions(player); action++) 
 					toFile.print(" x_" + player + "!" + action);
 			
+			
+			//Wrap up.
 			toFile.println();
 			toFile.println("End");
 			toFile.close();
