@@ -15,7 +15,7 @@ public class OptimalCorrelatedEquilibriumLPParser {
 	 * @param game The Game for which to create the OCE LP.
 	 * @param path The path (folder) in which the .lp file is to be located.
 	 * @param name The name of the lp file, .lp extension will be added automatically.
-	 * @throws FileNotFoundException when the given path + name combination is invalid.
+	 * @throws FileNotFoundException When the given path is illegal.
 	 * @post The .lp file will be located at: path + name + ".lp" and will have a UTF-8 encoding.
 	 */
 	public static void gameToOCELPfile(Game game, String path, String name) throws FileNotFoundException {
